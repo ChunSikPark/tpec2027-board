@@ -1,0 +1,7 @@
+{
+  "tool_name": "PowerShell",
+  "tool_input_preview": "{\"command\":\"Set-Location \\\"D:\\\\Project\\\\OneDrive - Texas A&M University\\\\Documents\\\\Calude\\\\tpec2027-board\\\"\\nnpx tsc --noEmit 2>&1 | Select-Object -Last 30\",\"description\":\"TypeScript type check\"}",
+  "error": "Exit code 1\nnode.exe : 'M' is not recognized as an internal or external command,\r\nAt line:1 char:1\r\n+ & \"C:\\nvm4w\\nodejs/node.exe\" \"C:\\nvm4w\\nodejs/node_modules/npm/bin/np ...\r\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: ('M' is not reco...ternal command,:String) [], RemoteException\r\n    + FullyQualifiedErrorId : NativeCommandError\r\n \r\noperable program or batch file.\r\nnode:internal/modules/cjs/loader:1479\r\n  throw err;\r\n  ^...",
+  "timestamp": "2026-04-30T06:28:55.463Z",
+  "retry_count": 1
+}
