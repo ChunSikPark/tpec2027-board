@@ -2,16 +2,10 @@ import type { Task, Status, Statuses } from '../types';
 import { MONTH_INDEX } from '../utils/months';
 import TaskCard from './TaskCard';
 
-const COLUMN_STYLES: Record<Status, { header: string; count: string }> = {
-  upcoming: { header: 'text-slate-400', count: 'bg-slate-700 text-slate-400' },
-  inprogress: { header: 'text-sky-400', count: 'bg-sky-900 text-sky-300' },
-  completed: { header: 'text-emerald-400', count: 'bg-emerald-900 text-emerald-300' },
-};
-
-const COLUMN_LABELS: Record<Status, string> = {
-  upcoming: 'UPCOMING',
-  inprogress: 'IN PROGRESS',
-  completed: 'COMPLETED',
+const COLUMN_CONFIG: Record<Status, { label: string; color: string; dimBg: string }> = {
+  upcoming:   { label: 'UPCOMING',    color: '#8BA3BE', dimBg: '#0A1220' },
+  inprogress: { label: 'IN PROGRESS', color: '#00E5FF', dimBg: '#001A24' },
+  completed:  { label: 'COMPLETED',   color: '#00FF88', dimBg: '#001A12' },
 };
 
 interface ColumnProps {
@@ -31,21 +25,58 @@ function sortTasks(tasks: Task[]): Task[] {
 export default function Column({ status, tasks, statuses, onStatusChange }: ColumnProps) {
   const columnTasks = tasks.filter(t => (statuses[t.id] ?? 'upcoming') === status);
   const sorted = sortTasks(columnTasks);
-  const styles = COLUMN_STYLES[status];
+  const { label, color, dimBg } = COLUMN_CONFIG[status];
 
   return (
     <div className="flex flex-col min-w-0">
-      <div className="flex items-center gap-2 mb-3 px-1">
-        <h2 className={`text-xs font-bold tracking-widest ${styles.header}`}>
-          {COLUMN_LABELS[status]}
+      {/* Column header */}
+      <div
+        className="flex items-center gap-2 mb-3 px-2 py-2 rounded-md"
+        style={{ background: dimBg, border: `1px solid ${color}18` }}
+      >
+        <span style={{
+          width: '7px', height: '7px', borderRadius: '50%',
+          background: color, flexShrink: 0,
+          boxShadow: `0 0 6px ${color}`,
+        }} />
+        <h2 style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '11px',
+          fontWeight: 700,
+          letterSpacing: '0.14em',
+          color,
+          flex: 1,
+          margin: 0,
+        }}>
+          {label}
         </h2>
-        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${styles.count}`}>
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '11px',
+          fontWeight: 700,
+          padding: '1px 8px',
+          borderRadius: '20px',
+          color,
+          background: `${color}12`,
+          border: `1px solid ${color}30`,
+        }}>
           {columnTasks.length}
         </span>
       </div>
+
+      {/* Tasks */}
       <div className="flex flex-col gap-2 flex-1">
         {sorted.length === 0 && (
-          <div className="text-xs text-slate-600 text-center py-8">No tasks</div>
+          <div style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+            color: '#1E3048',
+            textAlign: 'center',
+            padding: '32px 0',
+            letterSpacing: '0.1em',
+          }}>
+            NO TASKS
+          </div>
         )}
         {sorted.map(task => (
           <TaskCard
