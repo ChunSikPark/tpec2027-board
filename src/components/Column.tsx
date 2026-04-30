@@ -12,7 +12,7 @@ interface ColumnProps {
   status: Status;
   tasks: Task[];
   statuses: Statuses;
-  onStatusChange: (taskId: string) => void;
+  onStatusChange: (taskId: string, newStatus: Status) => void;
 }
 
 function sortTasks(tasks: Task[]): Task[] {

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { TASKS } from './tasks';
 import { fetchBoardState, updateStatuses, subscribeToBoard } from './supabase';
 import { getCurrentPlanningMonth } from './utils/months';
-import { cycleStatus, type FilterState } from './utils/filters';
+import { type FilterState } from './utils/filters';
 import type { Status, Statuses } from './types';
 import Header from './components/Header';
 import FilterBar from './components/FilterBar';
@@ -34,10 +34,8 @@ export default function App() {
     return () => { channel.unsubscribe(); };
   }, []);
 
-  const handleStatusChange = useCallback(async (taskId: string) => {
-    const current = (statuses[taskId] ?? 'upcoming') as Status;
-    const next = cycleStatus(current);
-    const updated: Statuses = { ...statuses, [taskId]: next };
+  const handleStatusChange = useCallback(async (taskId: string, newStatus: Status) => {
+    const updated: Statuses = { ...statuses, [taskId]: newStatus };
     setStatuses(updated);
     await updateStatuses(updated);
   }, [statuses]);

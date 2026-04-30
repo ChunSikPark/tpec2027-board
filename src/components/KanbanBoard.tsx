@@ -8,7 +8,7 @@ interface KanbanBoardProps {
   tasks: Task[];
   statuses: Statuses;
   filter: FilterState;
-  onStatusChange: (taskId: string) => void;
+  onStatusChange: (taskId: string, newStatus: Status) => void;
 }
 
 const COLUMN_ORDER: Status[] = ['upcoming', 'inprogress', 'completed'];
