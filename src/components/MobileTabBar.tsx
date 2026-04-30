@@ -32,10 +32,11 @@ export default function MobileTabBar({ activeTab, tasks, statuses, onTabChange }
             className="flex-1 flex flex-col items-center py-3 gap-0.5 transition-all duration-150"
             style={{
               borderTop: `2px solid ${isActive ? color : 'transparent'}`,
+              borderLeft: 'none',
+              borderRight: 'none',
+              borderBottom: 'none',
               background: isActive ? `${color}06` : 'transparent',
               cursor: 'pointer',
-              border: 'none',
-              borderTop: `2px solid ${isActive ? color : 'transparent'}`,
             }}
           >
             <span style={{
