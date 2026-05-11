@@ -12,6 +12,7 @@ export default function App() {
   const [statuses, setStatuses] = useState<Statuses>({});
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [filter, setFilter] = useState<FilterState>({
     activeMonth: getCurrentPlanningMonth(),
     activeAreas: [],
@@ -37,7 +38,13 @@ export default function App() {
   const handleStatusChange = useCallback(async (taskId: string, newStatus: Status) => {
     const updated: Statuses = { ...statuses, [taskId]: newStatus };
     setStatuses(updated);
-    await updateStatuses(updated);
+    try {
+      setSaveError(null);
+      await updateStatuses(updated);
+    } catch (err) {
+      console.error('Save failed:', err);
+      setSaveError(err instanceof Error ? err.message : 'Failed to save — check Supabase connection');
+    }
   }, [statuses]);
 
   const completedCount = TASKS.filter(t => (statuses[t.id] ?? 'upcoming') === 'completed').length;
@@ -74,6 +81,20 @@ export default function App() {
 
   return (
     <div className="min-h-screen" style={{ background: '#0D1117', color: '#8BA3BE', fontFamily: 'var(--font-sans)' }}>
+      {saveError && (
+        <div style={{
+          background: 'rgba(255,70,85,0.12)',
+          border: '1px solid rgba(255,70,85,0.4)',
+          color: '#FF4655',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '11px',
+          padding: '8px 16px',
+          letterSpacing: '0.05em',
+          textAlign: 'center',
+        }}>
+          ⚠ SAVE FAILED: {saveError}
+        </div>
+      )}
       <Header
         completedCount={completedCount}
         totalCount={TASKS.length}
