@@ -43,7 +43,12 @@ export default function App() {
       await updateStatuses(updated);
     } catch (err) {
       console.error('Save failed:', err);
-      setSaveError(err instanceof Error ? err.message : 'Failed to save — check Supabase connection');
+      const msg = err instanceof Error
+        ? err.message
+        : (err as { message?: string })?.message
+          ?? (err as { error_description?: string })?.error_description
+          ?? JSON.stringify(err);
+      setSaveError(msg);
     }
   }, [statuses]);
 
